@@ -1,0 +1,54 @@
+turtles-own[energia edad raza]
+globals [poblacion individuo individuo_especial habilidad]
+
+to Iniciar
+ clear-all
+ reset-ticks
+  set poblacion 40 + random (60 - 40)
+  set individuo poblacion - 2
+  set individuo_especial 2
+  create-turtles individuo [
+    setxy random-xcor random-ycor
+    set color yellow
+    set energia 3
+    set edad 0
+    set raza 1
+  ]
+  create-turtles individuo_especial [
+    setxy random-xcor random-ycor
+    set color red
+    set energia 10
+    set raza 2
+  ]
+  ask patches[
+    set pcolor green
+  ]
+end
+
+to darpaso
+  ask turtles[
+    forward 1
+    set habilidad raza
+    if habilidad = 1[
+      set energia energia - 1
+      set edad edad + 1
+    ]
+    set heading random 360
+    if (pcolor = green and habilidad = 1)[
+      set pcolor blue
+      set energia energia + 3
+    ]
+    if(pcolor = blue and habilidad = 2)[
+      set pcolor green
+    ]
+    if edad = 43 or energia = 0 [
+      die
+    ]    
+  ]
+  ask turtles with [count turtles-here > 1][
+    set habilidad raza
+    if habilidad = 1 [
+      die
+    ] 
+  ]
+end
